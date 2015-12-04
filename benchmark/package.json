@@ -1,0 +1,13 @@
+{
+  "name": "jts-benchmark",
+  "version": "0.1.0",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "benchmark": "^1.0.0",
+    "dot": "^1.0.3",
+    "ect": "^0.5.9",
+    "ejs": "^2.3.4",
+    "microtime": "^2.0.0"
+  }
+}
