@@ -2,11 +2,14 @@
 class JTS {
 
   constructor(config) {
+    config = config || {};
     this.cache = {};
     this.defaultLayout = config.defaultLayout || false;
-    this.layouts = './';
+    this.layouts = config.layouts || './';
+    this.templatePath = './';
 
     this.read = this.read.bind(this);
+    this.checkLayout = this.checkLayout.bind(this);
     this.compile = this.compile.bind(this);
     this.compileLayout = this.compileLayout.bind(this);
     this.render = this.render.bind(this);
@@ -31,7 +34,7 @@ class JTS {
   }
 
   read(filePath, noCache) {
-    this.layouts = require('path').dirname(filePath);
+    this.templatePath = require('path').dirname(filePath);
     if (noCache !== true && this.cache && this.cache[filePath]) {
       return this.cache[filePath];
     }
@@ -57,12 +60,15 @@ class JTS {
   compile(template, variables) {
     var params = [], props = [];
     for (var variable in variables) {
+      if (variable === 'layout') continue;
       props.push(variable);
       params.push(variables[variable]);
     }
 
-    this.compiled = eval(`(function(${props.join(',')}){var s=this.s.bind(this),layout=this.layout.bind(this);return` + '`' + template + '`});');
+    this.compiled = eval(`(function(layout,s,${props.join(',')}){return` + '`' + template + '`})');
     var scope = this.templateScope();
+    scope.customLayout = variables.layout;
+    params.unshift(scope.layout, scope.s);
     var final = this.compiled.apply(scope, params);
 
     if (scope.customLayout !== 'none' && (scope.customLayout !== false || this.defaultLayout !== false)) {
@@ -74,11 +80,32 @@ class JTS {
   }
 
   compileLayout(layout, body, template, variables) {
-    if (layout.indexOf('.jts') === -1) layout += '.jts';
-    var layout = this.read(require('path').resolve(this.layouts, layout));
+    layout = this.checkLayout(layout);
+    if (layout === false) return body;
+    layout = this.read(layout);
 
     variables.body = body;
+    variables.layout = 'none';
     return this.compile(layout, variables);
+  }
+
+  checkLayout(layout) {
+    if (!layout) return false;
+    if (layout.indexOf('.jts') === -1) layout += '.jts';
+    var path = require('path'), fs = require('fs');
+    var templatePath = path.resolve(this.templatePath, layout);
+    try {
+      fs.accessSync(templatePath);
+      return templatePath;
+    } catch(e) {
+      try {
+        templatePath = path.resolve(this.layouts, layout);
+        fs.accessSync(templatePath);
+        return templatePath
+      } catch(e) {
+        return false;
+      }
+    }
   }
 
   layout(template) {
