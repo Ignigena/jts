@@ -1,8 +1,9 @@
 'use strict';
 class JTS {
 
-  constructor() {
+  constructor(config) {
     this.cache = {};
+    this.defaultLayout = config.defaultLayout || false;
     this.layouts = './';
 
     this.read = this.read.bind(this);
@@ -64,8 +65,9 @@ class JTS {
     var scope = this.templateScope();
     var final = this.compiled.apply(scope, params);
 
-    if (scope.customLayout !== false) {
-      return this.compileLayout(scope.customLayout, final, template, variables);
+    if (scope.customLayout !== 'none' && (scope.customLayout !== false || this.defaultLayout !== false)) {
+      var layout = scope.customLayout ? scope.customLayout : this.defaultLayout;
+      return this.compileLayout(layout, final, template, variables);
     }
 
     return final;
