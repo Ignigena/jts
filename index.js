@@ -61,7 +61,7 @@ class JTS {
       params.push(variables[variable]);
     }
 
-    this.compiled = eval(`(function(${props.join(',')}){return` + '`' + template + '`});');
+    this.compiled = eval(`(function(${props.join(',')}){var s=this.s.bind(this),layout=this.layout.bind(this);return` + '`' + template + '`});');
     var scope = this.templateScope();
     var final = this.compiled.apply(scope, params);
 
