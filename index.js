@@ -14,6 +14,14 @@ class JTS {
   templateScope() {
     return {
       customLayout: false,
+      s: function(text) {
+        return String(text)
+          .replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/'/g, '&#39;')
+          .replace(/"/g, '&quot;');
+      },
       layout: function(template) {
         this.customLayout = template;
         return '';
