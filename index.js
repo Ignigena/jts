@@ -38,15 +38,11 @@ class JTS {
     if (noCache !== true && this.cache && this.cache[filePath]) {
       return this.cache[filePath];
     }
-    try {
-      var template = require('fs').readFileSync(filePath, 'utf8');
-      if (noCache !== true) {
-        this.cache[filePath] = template;
-      }
-      return template;
-    } catch (e) {
-      throw new Error(`Failed to load template ${filePath}`);
+    var template = require('fs').readFileSync(filePath, 'utf8');
+    if (noCache !== true) {
+      this.cache[filePath] = template;
     }
+    return template;
   }
 
   render(filePath, options, cb) {
@@ -60,23 +56,21 @@ class JTS {
   compile(template, variables) {
     var params = [], props = [];
     for (var variable in variables) {
-      if (variable === 'layout') continue;
       props.push(variable);
       params.push(variables[variable]);
     }
 
-    this.compiled = eval(`(function(layout,s,${props.join(',')}){return` + '`' + template + '`})');
+    this.compiled = eval(`(function(${props.join(',')}){var _jts=this;return` + '`' + template + '`})');
     var scope = this.templateScope();
     scope.customLayout = variables.layout;
-    params.unshift(scope.layout, scope.s);
     var final = this.compiled.apply(scope, params);
 
-    if (scope.customLayout !== 'none' && (scope.customLayout !== false || this.defaultLayout !== false)) {
-      var layout = scope.customLayout ? scope.customLayout : this.defaultLayout;
-      return this.compileLayout(layout, final, template, variables);
+    if (scope.customLayout === 'none' || (!scope.customLayout && !this.defaultLayout)) {
+      return final;
     }
 
-    return final;
+    var layout = scope.customLayout ? scope.customLayout : this.defaultLayout;
+    return this.compileLayout(layout, final, template, variables);
   }
 
   compileLayout(layout, body, template, variables) {
