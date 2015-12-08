@@ -4,7 +4,7 @@
   "description": "Basic server side templates using Javascript template strings.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "istanbul cover ./test/jasmine.js"
   },
   "author": "Albert Martin <albert@imor.tl>",
   "license": "MIT",
@@ -14,5 +14,10 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Ignigena/jts.git"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.1",
+    "jasmine": "^2.4.1",
+    "jasmine-spec-reporter": "^2.4.0"
   }
 }
