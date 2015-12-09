@@ -60,9 +60,10 @@ class JTS {
       params.push(variables[variable]);
     }
 
-    this.compiled = eval(`(function(${props.join(',')}){var _jts=this;return` + '`' + template + '`})');
+    this.compiled = eval(`((_jts,${props.join(',')}) => ` + '`' + template + '`)');
     var scope = this.templateScope();
     scope.customLayout = variables.layout;
+    params.unshift(scope);
     var final = this.compiled.apply(scope, params);
 
     if (scope.customLayout === 'none' || (!scope.customLayout && !this.defaultLayout)) {
