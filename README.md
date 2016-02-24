@@ -60,3 +60,7 @@ layout should include `${ body }` to render the child.
 
 Basic string filtering is provided to sanitize potentially unsafe input. This
 can be called via `_jts.s` with the variable to sanitize.
+
+## Array mapping
+
+An array can be mapped to HTML using the helper `_jts.each`.

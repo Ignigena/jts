@@ -26,6 +26,9 @@ class JTS {
           .replace(/'/g, '&#39;')
           .replace(/"/g, '&quot;');
       },
+      each: function(array, callback) {
+        return array.map(callback).join('');
+      },
       layout: function(template) {
         this.customLayout = template;
         return '';
@@ -96,7 +99,7 @@ class JTS {
       try {
         templatePath = path.resolve(this.layouts, layout);
         fs.accessSync(templatePath);
-        return templatePath
+        return templatePath;
       } catch(e) {
         return false;
       }
