@@ -48,7 +48,17 @@ module.exports.views = {
 
 ### Using in Express.js
 
-(Documentation coming...)
+JTS is compatible with `app.engine` in Express:
+
+```
+var JTS = require('jts');
+var engine = new JTS({
+  defaultLayout: 'layout',
+  layouts: 'views'
+});
+
+app.engine('jts', engine);
+```
 
 ## Layout support
 
