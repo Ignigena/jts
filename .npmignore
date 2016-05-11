@@ -1,1 +1,4 @@
 benchmark
+test
+.jshintrc
+.travis.yml
