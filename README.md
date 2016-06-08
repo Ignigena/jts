@@ -6,7 +6,11 @@ designed mainly to be a drop-in replacement for EJS on Express or Sails servers.
 
 JTS merely uses the built-in template strings in ES6 which is available by
 default in Node versions 4 and up. It is built primarily for speed and will not
-have many convenience features added in the future.
+have convenience features added that significantly impact speed.
+
+Benchmarks are available in the `benchmark` folder to compare performance with
+your favorite templating engine. You can also view [current observed results
+here](./benchmark/README.md).
 
 More documentation and features to come.
 
