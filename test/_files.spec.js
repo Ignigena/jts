@@ -17,7 +17,7 @@ describe('JTS: files', function() {
 
   it('provides caching of the template file', function() {
     var file = engine.read(filePath);
-    expect(engine.cache[filePath]).toBe(file);
+    expect(engine.cache.get(filePath)).toBe(file);
 
     spyOn(fs, 'readFileSync').and.callThrough();
     engine.read(filePath);

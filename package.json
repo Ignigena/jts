@@ -19,5 +19,8 @@
     "istanbul": "^0.4.1",
     "jasmine": "^2.4.1",
     "jasmine-spec-reporter": "^2.4.0"
+  },
+  "dependencies": {
+    "lru-cache": "^4.0.1"
   }
 }

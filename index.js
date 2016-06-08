@@ -1,9 +1,18 @@
 'use strict';
+const LRU = require('lru-cache');
+
 class JTS {
 
   constructor(config) {
     this.config = config || {};
-    this.cache = {};
+
+    if (this.config.cache !== false) {
+      this.config.cache = this.config.cache || {};
+      this.config.cache.max = this.config.cache.max || 500,
+      this.config.cache.maxAge = this.config.cache.maxAge || 1000 * 60 * 5
+      this.cache = LRU(this.config.cache);
+    }
+
     this.defaultLayout = this.config.defaultLayout || false;
     this.layouts = this.config.layouts || './';
     this.templatePath = './';
@@ -37,13 +46,15 @@ class JTS {
   }
 
   read(filePath) {
+    var cachedFile;
     this.templatePath = require('path').dirname(filePath);
-    if (this.config.cache !== false && this.cache && this.cache[filePath]) {
-      return this.cache[filePath];
+    if (this.config.cache !== false) {
+      cachedFile = this.cache.get(filePath);
+      if (cachedFile) return cachedFile;
     }
     var template = require('fs').readFileSync(filePath, 'utf8');
-    if (this.config.cache !== false) {
-      this.cache[filePath] = template;
+    if (this.config.cache !== false && !cachedFile) {
+      this.cache.set(filePath, template);
     }
     return template;
   }
