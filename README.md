@@ -17,7 +17,10 @@ var JTS = require('jts');
 var engine = new JTS({
   defaultLayout: 'layout.jts',
   layouts: 'path/to/layouts',
-  cache: true
+  cache: {
+    max: 500,
+    maxAge: 1000 * 60 * 5
+  }
 })
 ```
 
@@ -29,7 +32,8 @@ var engine = new JTS({
   as well as relative to the child layout if applicable.
 * `cache`: Enable or disable template caching. Useful when developing locally.
   Only the compiled function will be cached so that cache is created only once
-  for each template.
+  for each template. Uses [lru-cache](https://www.npmjs.com/package/lru-cache)
+  behind the scenes and can be disabled completely by setting to `false`.
 
 ### Using in Sails.js
 
