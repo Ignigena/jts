@@ -2,10 +2,10 @@
 class JTS {
 
   constructor(config) {
-    config = config || {};
+    this.config = config || {};
     this.cache = {};
-    this.defaultLayout = config.defaultLayout || false;
-    this.layouts = config.layouts || './';
+    this.defaultLayout = this.config.defaultLayout || false;
+    this.layouts = this.config.layouts || './';
     this.templatePath = './';
 
     this.read = this.read.bind(this);
@@ -36,13 +36,13 @@ class JTS {
     };
   }
 
-  read(filePath, noCache) {
+  read(filePath) {
     this.templatePath = require('path').dirname(filePath);
-    if (noCache !== true && this.cache && this.cache[filePath]) {
+    if (this.config.cache !== false && this.cache && this.cache[filePath]) {
       return this.cache[filePath];
     }
     var template = require('fs').readFileSync(filePath, 'utf8');
-    if (noCache !== true) {
+    if (this.config.cache !== false) {
       this.cache[filePath] = template;
     }
     return template;

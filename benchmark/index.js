@@ -74,15 +74,16 @@ suiteFile.add('doT:file', function() {
   var ejsJs = EJS.compile(read('templates/test.ejs', 'utf-8'));
   ejsJs(templateVars);
 })
-.add('jts:file', function() {
-  var file = JTS.read('templates/test.jts', true);
-  JTS.compile(file, templateVars);
+.add('jts:file(no-cache)', function() {
+  var JTSnocache = new jtsEngine({ cache: false });
+  var file = JTSnocache.read('templates/test.jts');
+  JTSnocache.compile(file, templateVars);
 })
-.add('jts:cached', function() {
+.add('jts:file(cache)', function() {
   var file = JTS.read('templates/test.jts');
   JTS.compile(file, templateVars);
 })
-.add('jts:express', function() {
+.add('jts:file(express-style)', function() {
   JTS.render('templates/test.jts', templateVars);
 })
 .on('cycle', function(event) {

@@ -16,7 +16,8 @@ More documentation and features to come.
 var JTS = require('jts');
 var engine = new JTS({
   defaultLayout: 'layout.jts',
-  layouts: 'path/to/layouts'
+  layouts: 'path/to/layouts',
+  cache: true
 })
 ```
 
@@ -26,6 +27,9 @@ var engine = new JTS({
 * `layouts`: (optional) the relative path to all layouts. When a layout is
   requested JTS will attempt to load the file both from the path specified here
   as well as relative to the child layout if applicable.
+* `cache`: Enable or disable template caching. Useful when developing locally.
+  Only the compiled function will be cached so that cache is created only once
+  for each template.
 
 ### Using in Sails.js
 
