@@ -45,8 +45,9 @@ class JTS {
         return '';
       },
       partial: function(template, variables) {
+        var partialEngine = new JTS();
         template = path.resolve(engine.templatePath, template);
-        return engine.compile(engine.read(template), variables);
+        return partialEngine.compile(partialEngine.read(template), variables);
       }
     };
   }
