@@ -1,5 +1,6 @@
 'use strict';
 const LRU = require('lru-cache');
+const path = require('path');
 
 class JTS {
 
@@ -25,6 +26,7 @@ class JTS {
   }
 
   templateScope() {
+    var engine = this;
     return {
       customLayout: false,
       s: function(text) {
@@ -41,6 +43,10 @@ class JTS {
       layout: function(template) {
         this.customLayout = template;
         return '';
+      },
+      partial: function(template, variables) {
+        template = path.resolve(engine.templatePath, template);
+        return engine.compile(engine.read(template), variables);
       }
     };
   }
@@ -74,9 +80,9 @@ class JTS {
       params.push(variables[variable]);
     }
 
-    this.compiled = eval(`((_jts,${props.join(',')}) => ` + '`' + template + '`)');
+    this.compiled = eval(`((_jts${props.length > 0 ? `,${props.join(',')}` : ''}) => ` + '`' + template + '`)');
     var scope = this.templateScope();
-    scope.customLayout = variables.layout;
+    scope.customLayout = variables && variables.layout;
     params.unshift(scope);
     var final = this.compiled.apply(scope, params);
 

@@ -22,6 +22,12 @@ describe('JTS: files', function() {
     spyOn(fs, 'readFileSync').and.callThrough();
     engine.read(filePath);
     expect(fs.readFileSync).not.toHaveBeenCalled();
-  })
+  });
+
+  it('processes partials in a template file', function() {
+    var file = engine.read('test/templates/helloWorldPartial.jts');
+    var result = engine.compile(file);
+    expect(result).toBe('Hello World!');
+  });
 
 });
