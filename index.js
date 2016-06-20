@@ -38,6 +38,7 @@ class JTS {
           .replace(/"/g, '&quot;');
       },
       each: function(array, callback) {
+        if (!array || !Array.isArray(array)) return '';
         return array.map(callback).join('');
       },
       layout: function(template) {
