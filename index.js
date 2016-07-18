@@ -88,11 +88,11 @@ class JTS {
     params.unshift(scope);
     var final = this.compiled.apply(scope, params);
 
-    if (scope.customLayout === 'none' || (!scope.customLayout && !this.defaultLayout)) {
+    if (scope.customLayout === 'none' || (!scope.customLayout && !this.config.defaultLayout)) {
       return final;
     }
 
-    var layout = scope.customLayout ? scope.customLayout : this.defaultLayout;
+    var layout = scope.customLayout ? scope.customLayout : this.config.defaultLayout;
     return this.compileLayout(layout, final, template, variables);
   }
 
