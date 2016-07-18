@@ -1,6 +1,6 @@
 {
   "name": "jts",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Basic server side templates using Javascript template strings.",
   "main": "index.js",
   "scripts": {
