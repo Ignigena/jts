@@ -48,8 +48,10 @@ class JTS {
       partial: function(template, variables) {
         var partialEngine = new JTS();
         template = path.resolve(engine.templatePath, template);
+        variables = variables || this.variables;
         return partialEngine.compile(partialEngine.read(template), variables);
-      }
+      },
+      variables: {}
     };
   }
 
@@ -82,10 +84,12 @@ class JTS {
       params.push(variables[variable]);
     }
 
-    this.compiled = eval(`((_jts${props.length > 0 ? `,${props.join(',')}` : ''}) => ` + '`' + template + '`)');
     var scope = this.templateScope();
+    scope.variables = variables;
     scope.customLayout = variables && variables.layout;
     params.unshift(scope);
+
+    this.compiled = eval(`((_jts${props.length > 0 ? `,${props.join(',')}` : ''}) => ` + '`' + template + '`)');
     var final = this.compiled.apply(scope, params);
 
     if (scope.customLayout === 'none' || (!scope.customLayout && !this.config.defaultLayout)) {
