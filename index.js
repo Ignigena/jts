@@ -17,12 +17,53 @@ class JTS {
     this.defaultLayout = this.config.defaultLayout || false;
     this.layouts = this.config.layouts || './';
     this.templatePath = './';
+    this.partialsUsed = [];
 
+    this.apply = this.apply.bind(this);
     this.read = this.read.bind(this);
     this.checkLayout = this.checkLayout.bind(this);
     this.compile = this.compile.bind(this);
     this.compileLayout = this.compileLayout.bind(this);
     this.render = this.render.bind(this);
+  }
+
+  // Webpack plugin
+  // --
+  // Allows for JTS to be used in your build process with Webpack. Simply
+  // configure the plugin with a `from` and a `to` value representing the
+  // template source and final HTML output:
+  // ```
+  // plugins: [
+  //   new JTS({ from: 'src/template.jts', to: 'index.html' })
+  // ]
+  // ```
+  apply(compiler) {
+    compiler.plugin('emit', (compilation, callback) => {
+      this.config.cache = false;
+
+      // Determine the location of the template and add to webpack watch.
+      var source = path.resolve(this.config.from);
+      if (compilation.fileDependencies.indexOf(source) < 0) {
+        compilation.fileDependencies.push(source);
+      }
+
+      // Render the template.
+      this.render(source, this.config.vars || {}, (err, source) => {
+        if (err) return console.error(err);
+        compilation.assets[this.config.to] = {
+          source: () => source,
+          size: () => source.length
+        };
+
+        // Add each partial that was used in the template to webpack watch.
+        this.partialsUsed.forEach(partial => {
+          if (compilation.fileDependencies.indexOf(partial) < 0) {
+            compilation.fileDependencies.push(partial);
+          }
+        });
+        callback();
+      });
+    });
   }
 
   templateScope() {
@@ -48,6 +89,9 @@ class JTS {
       partial: function(template, variables) {
         var partialEngine = new JTS();
         template = path.resolve(engine.templatePath, template);
+        if (engine.partialsUsed.indexOf(template) < 0) {
+          engine.partialsUsed.push(template);
+        }
         variables = variables || this.variables;
         return partialEngine.compile(partialEngine.read(template), variables);
       },
