@@ -4,7 +4,9 @@
   "description": "Basic server side templates using Javascript template strings.",
   "main": "index.js",
   "scripts": {
-    "test": "istanbul cover ./test/jasmine.js"
+    "test": "istanbul cover ./test/jasmine.js",
+    "prebenchmark": "cd ./benchmark && npm install",
+    "benchmark": "cd ./benchmark && npm start"
   },
   "author": "Albert Martin <albert@imor.tl>",
   "license": "MIT",
