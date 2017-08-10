@@ -2,7 +2,7 @@ Benchmarks
 ==
 
 Test the performance of JTS compared to your favorite templating engine. A few
-defaults are provided and can be run by running `npm install` and `npm start`.
+defaults are provided and can be run by running `npm run benchmark`.
 
 Observed
 --

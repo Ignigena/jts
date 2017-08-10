@@ -8,8 +8,8 @@ function testCompletion() {
   console.log();
 }
 
-var longString = read('templates/long.html', 'utf-8');
-var shortString = read('templates/short.html', 'utf-8');
+var longString = read(__dirname + '/templates/long.html', 'utf-8');
+var shortString = read(__dirname + '/templates/short.html', 'utf-8');
 
 var templateVars = {
   header: longString,
@@ -67,24 +67,24 @@ suite.add('doT', function() {
 
 console.log('Testing performance with file I/O...');
 suiteFile.add('doT:file', function() {
-  var dotJs = DOT.template(read('templates/test.dot', 'utf-8'));
+  var dotJs = DOT.template(read(__dirname + '/templates/test.dot', 'utf-8'));
   dotJs(templateVars);
 })
 .add('ejs:file', function() {
-  var ejsJs = EJS.compile(read('templates/test.ejs', 'utf-8'));
+  var ejsJs = EJS.compile(read(__dirname + '/templates/test.ejs', 'utf-8'));
   ejsJs(templateVars);
 })
 .add('jts:file(no-cache)', function() {
   var JTSnocache = new jtsEngine({ cache: false });
-  var file = JTSnocache.read('templates/test.jts');
+  var file = JTSnocache.read(__dirname + '/templates/test.jts');
   JTSnocache.compile(file, templateVars);
 })
 .add('jts:file(cache)', function() {
-  var file = JTS.read('templates/test.jts');
+  var file = JTS.read(__dirname + '/templates/test.jts');
   JTS.compile(file, templateVars);
 })
 .add('jts:file(express-style)', function() {
-  JTS.render('templates/test.jts', templateVars);
+  JTS.render(__dirname + '/templates/test.jts', templateVars);
 })
 .on('cycle', function(event) {
   console.log(String(event.target));

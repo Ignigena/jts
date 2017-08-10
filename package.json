@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "istanbul cover ./test/jasmine.js",
-    "prebenchmark": "cd ./benchmark && npm install",
-    "benchmark": "cd ./benchmark && npm start"
+    "posttest": "npm run benchmark",
+    "benchmark": "node ./benchmark"
   },
   "author": "Albert Martin <albert@imor.tl>",
   "license": "MIT",
@@ -18,9 +18,14 @@
     "url": "https://github.com/Ignigena/jts.git"
   },
   "devDependencies": {
+    "benchmark": "^1.0.0",
+    "dot": "^1.0.3",
+    "ejs": "^2.3.4",
+    "handlebars": "^4.0.5",
     "istanbul": "^0.4.1",
     "jasmine": "^2.4.1",
-    "jasmine-spec-reporter": "^2.4.0"
+    "jasmine-spec-reporter": "^2.4.0",
+    "microtime": "^2.0.0"
   },
   "dependencies": {
     "lru-cache": "^4.0.1"
