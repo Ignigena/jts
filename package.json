@@ -3,6 +3,9 @@
   "version": "1.2.4",
   "description": "Basic server side templates using Javascript template strings.",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "istanbul cover ./test/jasmine.js",
     "posttest": "npm run benchmark",
