@@ -31,6 +31,6 @@
     "microtime": "^2.0.0"
   },
   "dependencies": {
-    "lru-cache": "^4.0.1"
+    "quick-lru": "^1.1.0"
   }
 }

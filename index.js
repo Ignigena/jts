@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const LRU = require('lru-cache');
+const LRU = require('quick-lru');
 
 class JTS {
 
@@ -11,9 +11,8 @@ class JTS {
 
     if (this.config.cache !== false) {
       this.config.cache = this.config.cache || {};
-      this.config.cache.max = this.config.cache.max || 500,
-      this.config.cache.maxAge = this.config.cache.maxAge || 1000 * 60 * 5
-      this.cache = LRU(this.config.cache);
+      this.config.cache.maxSize = this.config.cache.maxSize || 500,
+      this.cache = new LRU(this.config.cache);
     }
 
     this.defaultLayout = this.config.defaultLayout || false;
