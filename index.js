@@ -1,6 +1,8 @@
 'use strict';
-const LRU = require('lru-cache');
+const fs = require('fs');
 const path = require('path');
+
+const LRU = require('lru-cache');
 
 class JTS {
 
@@ -157,20 +159,13 @@ class JTS {
   checkLayout(layout) {
     if (!layout) return false;
     if (layout.indexOf('.jts') === -1) layout += '.jts';
-    var path = require('path'), fs = require('fs');
     var templatePath = path.resolve(this.templatePath, layout);
-    try {
-      fs.accessSync(templatePath);
-      return templatePath;
-    } catch(e) {
-      try {
-        templatePath = path.resolve(this.layouts, layout);
-        fs.accessSync(templatePath);
-        return templatePath;
-      } catch(e) {
-        return false;
-      }
-    }
+    if (fs.existsSync(templatePath)) return templatePath;
+
+    templatePath = path.resolve(this.layouts, layout);
+    if (fs.existsSync(templatePath)) return templatePath;
+
+    return false;
   }
 
   layout(template) {
