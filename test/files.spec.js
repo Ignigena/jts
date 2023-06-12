@@ -19,7 +19,7 @@ describe('JTS: files', function() {
     var file = engine.read(filePath);
     expect(engine.cache.get(filePath)).toBe(file);
 
-    spyOn(fs, 'readFileSync').and.callThrough();
+    jest.spyOn(fs, 'readFileSync');
     engine.read(filePath);
     expect(fs.readFileSync).not.toHaveBeenCalled();
   });

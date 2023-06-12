@@ -3,8 +3,8 @@ var read = require('fs').readFileSync;
 function testCompletion() {
   var fastest = this.filter('fastest');
   var slowest = this.filter('slowest');
-  console.log('Fastest is ' + fastest.pluck('name') + ` (mean time: ${Number(fastest['0'].stats.mean * 1000).toFixed(3)}ms)`);
-  console.log('Slowest is ' + slowest.pluck('name') + ` (mean time: ${Number(slowest['0'].stats.mean * 1000).toFixed(3)}ms)`);
+  console.log('Fastest is ' + fastest.map('name') + ` (mean time: ${Number(fastest['0'].stats.mean * 1000).toFixed(3)}ms)`);
+  console.log('Slowest is ' + slowest.map('name') + ` (mean time: ${Number(slowest['0'].stats.mean * 1000).toFixed(3)}ms)`);
   console.log();
 }
 
