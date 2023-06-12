@@ -1,4 +1,4 @@
-# JTS Server-side Templating [![Build Status](https://travis-ci.org/Ignigena/jts.svg?branch=master)](https://travis-ci.org/Ignigena/jts)
+# JTS Server-side Templating [![Build Status](https://github.com/Ignigena/jts/actions/workflows/test.yml/badge.svg)](https://github.com/Ignigena/jts/actions/workflows/test.yml)
 
 JTS (Javascript Template String) is a very basic server side template engine.
 Actually, to call it a template engine is rather generous--rather this was
