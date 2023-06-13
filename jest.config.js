@@ -5,5 +5,5 @@ module.exports = {
     '/node_modules/',
     '<rootDir>/(config|tests|coverage)'
   ],
-  coverageReporters: ['json', 'html', 'lcovonly', 'text-summary'],
+  coverageReporters: ['json', 'html', 'lcovonly', 'text-summary']
 }
