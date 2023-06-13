@@ -122,25 +122,22 @@ class JTS {
   }
 
   compile (template, variables) {
-    const params = []; const props = []
+    const params = [this.templateScope()]
+    const props = ['_jts']
+
     for (const variable in variables) {
       props.push(variable)
       params.push(variables[variable])
     }
 
-    const scope = this.templateScope()
-    scope.variables = variables
-    scope.customLayout = variables && variables.layout
-    params.unshift(scope)
+    params[0].variables = variables
+    params[0].customLayout = variables?.layout
 
-    this.compiled = eval(`((_jts${props.length > 0 ? `,${props.join(',')}` : ''}) => ` + '`' + template + '`)')
-    const final = this.compiled.apply(scope, params)
+    const final = new Function(...props, `return \`${template}\``)(...params)
 
-    if (scope.customLayout === 'none' || (!scope.customLayout && !this.config.defaultLayout)) {
-      return final
-    }
+    const layout = params[0].customLayout ?? this.config.defaultLayout
+    if (layout === 'none') return final
 
-    const layout = scope.customLayout ? scope.customLayout : this.config.defaultLayout
     return this.compileLayout(layout, final, template, variables)
   }
 

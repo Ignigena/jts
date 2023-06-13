@@ -19,7 +19,7 @@ module.exports = {
     }
   ],
   rules: {
-    'no-eval': 'off',
+    'no-new-func': 'off',
     'no-template-curly-in-string': 'off',
     'arrow-body-style': ['error', 'as-needed'],
     'arrow-parens': ['error', 'as-needed']
