@@ -8,7 +8,6 @@
   ],
   "scripts": {
     "test": "jest",
-    "posttest": "npm run benchmark",
     "benchmark": "node ./benchmark"
   },
   "author": "Albert Martin <albert@imor.tl>",
