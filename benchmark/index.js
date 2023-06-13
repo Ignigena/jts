@@ -77,11 +77,11 @@ suiteFile.add('doT:file', function () {
   })
   .add('jts:file(no-cache)', function () {
     const JTSnocache = new JTSEngine({ cache: false })
-    const file = JTSnocache.readFileSync(resolve(__dirname, './templates/test.jts'))
+    const file = JTSnocache.read(resolve(__dirname, './templates/test.jts'))
     JTSnocache.compile(file, templateVars)
   })
   .add('jts:file(cache)', function () {
-    const file = JTS.readFileSync(resolve(__dirname, './templates/test.jts'))
+    const file = JTS.read(resolve(__dirname, './templates/test.jts'))
     JTS.compile(file, templateVars)
   })
   .add('jts:file(express-style)', function () {
