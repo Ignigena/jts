@@ -17,8 +17,8 @@ More documentation and features to come.
 ## Configuration
 
 ```
-var JTS = require('jts');
-var engine = new JTS({
+const { JTS } = require('jts')
+const engine = new JTS({
   defaultLayout: 'layout.jts',
   layouts: 'path/to/layouts',
   cache: {
@@ -44,18 +44,18 @@ var engine = new JTS({
 The JTS engine can be used in Sails by modifying `config/views.js`:
 
 ```
-var JTS = require('jts');
-var engine = new JTS({
+const { JTS } = require('jts')
+const engine = new JTS({
   defaultLayout: 'layout',
   layouts: 'views'
-});
+})
 
-module.exports.views = {
+exports.views = {
   engine: {
     ext: 'jts',
-    fn: engine.render,
-  },
-};
+    fn: engine.render
+  }
+}
 ```
 
 ### Using in Express.js
@@ -63,13 +63,13 @@ module.exports.views = {
 JTS is compatible with `app.engine` in Express:
 
 ```
-var JTS = require('jts');
-var engine = new JTS({
+const { JTS } = require('jts')
+const engine = new JTS({
   defaultLayout: 'layout',
   layouts: 'views'
-});
+})
 
-app.engine('jts', engine);
+app.engine('jts', engine)
 ```
 
 ## Layout support

@@ -1,4 +1,4 @@
-const JTS = require('../index.js')
+const { JTS } = require('../')
 const engine = new JTS()
 
 describe('JTS: basic', function () {

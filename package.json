@@ -2,9 +2,10 @@
   "name": "jts",
   "version": "1.2.4",
   "description": "Basic server side templates using Javascript template strings.",
-  "main": "index.js",
+  "main": "src/index.js",
   "files": [
-    "index.js"
+    "src/**/*.js",
+    "!*.spec.js"
   ],
   "scripts": {
     "test": "jest",

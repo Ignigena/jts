@@ -4,6 +4,8 @@ const path = require('node:path')
 
 const LRU = require('quick-lru')
 
+const compile = require('./compile')
+
 class JTS {
   constructor (config) {
     this.config = config || {}
@@ -122,20 +124,13 @@ class JTS {
   }
 
   compile (template, variables) {
-    const params = [this.templateScope()]
-    const props = ['_jts']
+    const _jts = this.templateScope()
+    _jts.variables = variables
+    _jts.customLayout = variables?.layout
 
-    for (const variable in variables) {
-      props.push(variable)
-      params.push(variables[variable])
-    }
+    const final = compile(template, { _jts, ...variables })
 
-    params[0].variables = variables
-    params[0].customLayout = variables?.layout
-
-    const final = new Function(...props, `return \`${template}\``)(...params)
-
-    const layout = params[0].customLayout ?? this.config.defaultLayout
+    const layout = _jts.customLayout ?? this.config.defaultLayout
     if (layout === 'none') return final
 
     return this.compileLayout(layout, final, template, variables)

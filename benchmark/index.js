@@ -41,7 +41,7 @@ const suiteFile = new Benchmark.Suite()
 const DOT = require('dot')
 const EJS = require('ejs')
 const Handlebars = require('handlebars')
-const JTSEngine = require('../index.js')
+const JTSEngine = require('../src/JTS.js')
 const JTS = new JTSEngine()
 
 console.log('\nTesting raw compilation performance with strings...')
