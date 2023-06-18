@@ -2,19 +2,12 @@
 const fs = require('node:fs')
 const path = require('node:path')
 
-const LRU = require('quick-lru')
-
 const compile = require('./compile')
 
 class JTS {
   constructor (config) {
     this.config = config || {}
-
-    if (this.config.cache !== false) {
-      this.config.cache = this.config.cache || {}
-      this.config.cache.maxSize = this.config.cache.maxSize || 500
-      this.cache = new LRU(this.config.cache)
-    }
+    this.cache = this.config.cache ?? new Map()
 
     this.defaultLayout = this.config.defaultLayout || false
     this.layouts = this.config.layouts || './'
@@ -41,8 +34,6 @@ class JTS {
   // ```
   apply (compiler) {
     compiler.plugin('emit', (compilation, callback) => {
-      this.config.cache = false
-
       // Determine the location of the template and add to webpack watch.
       const source = path.resolve(this.config.from)
       if (compilation.fileDependencies.indexOf(source) < 0) {
@@ -102,16 +93,13 @@ class JTS {
   }
 
   read (filePath) {
-    let cachedFile
+    const cachedFile = this.cache.get?.(filePath)
+    if (cachedFile) return cachedFile
+
     this.templatePath = path.dirname(filePath)
-    if (this.config.cache !== false) {
-      cachedFile = this.cache.get(filePath)
-      if (cachedFile) return cachedFile
-    }
     const template = fs.readFileSync(filePath, 'utf8')
-    if (this.config.cache !== false && !cachedFile) {
-      this.cache.set(filePath, template)
-    }
+    this.cache.set?.(filePath, template)
+
     return template
   }
 
